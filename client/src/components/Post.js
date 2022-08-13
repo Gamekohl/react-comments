@@ -1,9 +1,18 @@
 import React from 'react'
 import { usePost } from '../contexts/PostContext'
+import { useAsyncFn } from '../hooks/useAsync';
+import { createComment } from '../services/comments';
+import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 
 const Post = () => {
-    const { post, rootComments } = usePost();
+    const { post, rootComments, createLocalComment } = usePost();
+    const { loading, error, exec: createCommentFn } = useAsyncFn(createComment)
+
+    const onCommentCreate = (message) => {
+        return createCommentFn({ postId: post.id, message })
+            .then(createLocalComment);
+    }
 
     return (
         <>
@@ -13,7 +22,8 @@ const Post = () => {
             </article>
             <h3 className='comments-title'>Comments</h3>
             <section>
-                {rootComments !== null && rootComments.length > 0 && (
+                <CommentForm loading={loading} error={error} onSubmit={onCommentCreate} />
+                {rootComments !== null && rootComments?.length > 0 && (
                     <div className='mt-4'>
                         <CommentList comments={rootComments} />
                     </div>
