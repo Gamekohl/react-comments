@@ -1,5 +1,5 @@
 # Nested Comment System
-A nested comment system inspired by [Reddit](https://reddit.com) and coded along with the video of [WebDevSimplified](https://github.com/WebDevSimplified) ([Repository](https://github.com/WebDevSimplified/nested-comments)).
+A nested comment system inspired by [Reddit](https://reddit.com) and coded along with the [video](https://www.youtube.com/watch?v=lyNetvEfvT0&ab_channel=WebDevSimplified) of [WebDevSimplified](https://github.com/WebDevSimplified) ([Repository](https://github.com/WebDevSimplified/nested-comments)).
 
 ## 🖥️ Client
 The client was built using [React](https://github.com/facebook/react). Following additional packages were used:
