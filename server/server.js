@@ -9,7 +9,7 @@ dotenv.config();
 const app = fastify();
 app.register(sensible);
 app.register(cookie, {
-    secrect: process.env.COOKIE_SECRET
+    secret: process.env.COOKIE_SECRET
 });
 app.register(cors, {
     origin: process.env.CLIENT_URL,
