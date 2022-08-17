@@ -30,7 +30,11 @@ The server was built using [fastify](https://github.com/fastify/fastify) as the 
 The database was hosted locally. An additional package to Prisma was used in order to automatically create Prisma schemas and migrations:
 - [@prisma/client](https://www.npmjs.com/package/@prisma/client)
 
-## Author
+## ✏️ Author
 ---
 Original repository and idea: [WebDevSimplified](https://github.com/WebDevSimplified)\
 This repository: [Gamekohl](https://github.com/Gamekohl)
+
+## 🔑 License
+---
+This project is licensed under the MIT License - see the LICENSE file for details
