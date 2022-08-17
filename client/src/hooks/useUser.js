@@ -1,9 +1,7 @@
-import React from 'react'
-
-const userUser = () => {
+const useUser = () => {
     return {
         id: document.cookie.match(/userId=(?<id>[^;]+);?$/).groups.id
     }
 }
 
-export default userUser
+export default useUser

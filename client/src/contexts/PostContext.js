@@ -46,12 +46,51 @@ export const PostProvider = ({ children }) => {
         ]));
     }
 
+    const updateLocalComment = (id, message) => {
+        setComments(prev => prev.map(comment => {
+            if (comment.id === id) {
+                return { ...comment, message }
+            }
+
+            return comment;
+        }));
+    }
+
+    const deleteLocalComment = (id) => {
+        setComments(prev => prev.filter(comment => comment.id !== id));
+    }
+
+    const toggleLocalCommentLike = (id, addLike) => {
+        setComments(prev => prev.map(comment => {
+            if (id === comment.id) {
+                if (addLike) {
+                    return {
+                        ...comment,
+                        likeCount: comment.likeCount + 1,
+                        likedByMe: true
+                    }
+                } else {
+                    return {
+                        ...comment,
+                        likeCount: comment.likeCount - 1,
+                        likedByMe: false
+                    }
+                }
+            } else {
+                return comment;
+            }
+        }));
+    }
+
     return (
         <Context.Provider value={{
             post: { id, ...post },
             getReplies,
             rootComments: commentsByParentId[null],
-            createLocalComment
+            createLocalComment,
+            updateLocalComment,
+            deleteLocalComment,
+            toggleLocalCommentLike
         }}>
             {loading ? (
                 <h1>Loading...</h1>
