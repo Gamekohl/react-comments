@@ -1,24 +1,26 @@
+import { FunctionComponent, ReactNode } from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom";
 import { useAsync } from "../hooks/useAsync";
+import { Comment } from "../models/Comment.model";
 import { getPost } from "../services/posts";
 
-const Context = createContext();
+const Context = createContext(null);
 
 export const usePost = () => {
     return useContext(Context);
 }
 
-export const PostProvider = ({ children }) => {
+export const PostProvider: FunctionComponent<{ children: ReactNode }> = ({ children }) => {
     const { id } = useParams();
     const { loading, error, value: post } = useAsync(() => getPost(id), [id]);
-    const [comments, setComments] = useState([]);
-    const commentsByParentId = useMemo(() => {
+    const [comments, setComments] = useState<Comment[]>([]);
+    const commentsByParentId = useMemo<any>(() => {
         if (comments == null) {
             return [];
         }
 
-        const group = {}
+        const group: { [key: string]: Comment[] } = {};
 
         comments.forEach(comment => {
             group[comment.parentId] ||= [];
@@ -35,18 +37,18 @@ export const PostProvider = ({ children }) => {
         setComments(post.comments);
     }, [post?.comments]);
 
-    const getReplies = (id) => {
+    const getReplies = (id: string): Comment[] => {
         return commentsByParentId[id];
     }
 
-    const createLocalComment = (comment) => {
+    const createLocalComment = (comment: Comment) => {
         setComments(prev => ([
             comment,
             ...prev
         ]));
     }
 
-    const updateLocalComment = (id, message) => {
+    const updateLocalComment = (id: string, message: string) => {
         setComments(prev => prev.map(comment => {
             if (comment.id === id) {
                 return { ...comment, message }
@@ -56,11 +58,11 @@ export const PostProvider = ({ children }) => {
         }));
     }
 
-    const deleteLocalComment = (id) => {
+    const deleteLocalComment = (id: string) => {
         setComments(prev => prev.filter(comment => comment.id !== id));
     }
 
-    const toggleLocalCommentLike = (id, addLike) => {
+    const toggleLocalCommentLike = (id: string, addLike: boolean) => {
         setComments(prev => prev.map(comment => {
             if (id === comment.id) {
                 if (addLike) {
@@ -86,7 +88,7 @@ export const PostProvider = ({ children }) => {
         <Context.Provider value={{
             post: { id, ...post },
             getReplies,
-            rootComments: commentsByParentId[null],
+            rootComments: commentsByParentId["null"],
             createLocalComment,
             updateLocalComment,
             deleteLocalComment,

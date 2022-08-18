@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import IconButton from './IconButton'
 import { FaEdit, FaHeart, FaRegHeart, FaReply, FaTrash } from 'react-icons/fa';
 import { usePost } from '../contexts/PostContext';
@@ -7,10 +7,13 @@ import { useAsyncFn } from '../hooks/useAsync';
 import { createComment, deleteComment, toggleCommentLike, updateComment } from '../services/comments';
 import CommentForm from './CommentForm';
 import useUser from '../hooks/useUser';
+import { Comment as CommentModel } from '../models/Comment.model';
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' })
 
-const Comment = ({ id, message, user, createdAt, likeCount, likedByMe }) => {
+type CommentProps = CommentModel;
+
+const Comment: FunctionComponent<CommentProps> = ({ id, message, user, createdAt, likeCount, likedByMe }) => {
     const [childsHidden, setChildsHidden] = useState(false);
     const [isReplying, setIsReplying] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -37,17 +40,17 @@ const Comment = ({ id, message, user, createdAt, likeCount, likedByMe }) => {
         setIsEditing(prev => !prev);
     }
 
-    const onCommentReply = (message) => {
+    const onCommentReply = (message: string) => {
         return createCommentFn.exec({ postId: post.id, message, parentId: id })
-            .then(comment => {
+            .then((comment: Comment) => {
                 setIsReplying(false);
                 createLocalComment(comment);
             });
     }
 
-    const onCommentUpdate = (message) => {
+    const onCommentUpdate = (message: string) => {
         return updateCommentFn.exec({ postId: post.id, message, id })
-            .then(comment => {
+            .then((comment: CommentModel) => {
                 setIsEditing(false);
                 updateLocalComment(id, comment.message);
             });
@@ -55,14 +58,14 @@ const Comment = ({ id, message, user, createdAt, likeCount, likedByMe }) => {
 
     const onCommentDelete = () => {
         return deleteCommentFn.exec({ postId: post.id, id })
-            .then(({ commentId }) => {
+            .then(({ commentId }: { commentId: string }) => {
                 deleteLocalComment(commentId);
             });
     }
 
     const onToggleCommentLike = () => {
         return toggleCommentLikeFn.exec({ id, postId: post.id })
-            .then(({ addLike }) => toggleLocalCommentLike(id, addLike));
+            .then(({ addLike }: { addLike: boolean }) => toggleLocalCommentLike(id, addLike));
     }
 
     return (

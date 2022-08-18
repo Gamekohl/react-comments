@@ -1,15 +1,16 @@
 import React from 'react'
+import { FunctionComponent } from 'react';
 import { usePost } from '../contexts/PostContext'
 import { useAsyncFn } from '../hooks/useAsync';
 import { createComment } from '../services/comments';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 
-const Post = () => {
+const Post: FunctionComponent = () => {
     const { post, rootComments, createLocalComment } = usePost();
     const { loading, error, exec: createCommentFn } = useAsyncFn(createComment)
 
-    const onCommentCreate = (message) => {
+    const onCommentCreate = (message: string) => {
         return createCommentFn({ postId: post.id, message })
             .then(createLocalComment);
     }

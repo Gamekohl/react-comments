@@ -1,9 +1,18 @@
-import React, { useState } from 'react'
+import React, { FunctionComponent, useState } from 'react'
+import { FormEvent } from 'react';
 
-const CommentForm = ({ loading, error, onSubmit, autoFocus = false, initialValue = '' }) => {
+type CommentFormProps = {
+    loading: boolean;
+    error: any;
+    onSubmit: (message: string) => Promise<any>;
+    autoFocus?: boolean;
+    initialValue?: string;
+}
+
+const CommentForm: FunctionComponent<CommentFormProps> = ({ loading, error, onSubmit, autoFocus = false, initialValue = '' }) => {
     const [message, setMessage] = useState(initialValue)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         onSubmit(message)

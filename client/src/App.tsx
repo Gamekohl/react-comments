@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { PostProvider } from "./contexts/PostContext";
 import Post from "./components/Post";
 
-function App() {
+const App = () => {
   return (
     <>
       <div className="container">

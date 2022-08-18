@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
+import { Comment as CommentModel } from '../models/Comment.model'
 import Comment from './Comment'
 
-const CommentList = ({ comments }) => {
+type CommentListProps = {
+    comments: CommentModel[]
+};
+
+const CommentList: FunctionComponent<CommentListProps> = ({ comments }) => {
     return (
         <>
             {comments.map(comment => (

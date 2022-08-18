@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom';
 import { useAsync } from '../hooks/useAsync';
+import { Post } from '../models/Post.model';
 import { getPosts } from '../services/posts';
 
-const PostLists = () => {
+const PostLists: FunctionComponent = () => {
     const { loading, error, value: posts } = useAsync(getPosts, []);
 
     if (loading) {
@@ -16,7 +17,7 @@ const PostLists = () => {
 
     return (
         <>
-            {posts.map(post => (
+            {posts.map((post: Post) => (
                 <h1 key={post.id}>
                     <Link to={`/posts/${post.id}`}>{post.title}</Link>
                 </h1>

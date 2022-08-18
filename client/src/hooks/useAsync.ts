@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react"
+import { DependencyList, useCallback, useEffect, useState } from "react"
 
-export const useAsync = (func, dependencies = []) => {
+export const useAsync = (func: Function, dependencies: DependencyList = []) => {
     const { exec, ...state } = useAsyncInternal(func, dependencies, true);
 
     useEffect(() => {
@@ -10,25 +10,25 @@ export const useAsync = (func, dependencies = []) => {
     return state;
 }
 
-export const useAsyncFn = (func, dependencies = []) => {
+export const useAsyncFn = (func: Function, dependencies: DependencyList = []) => {
     return useAsyncInternal(func, dependencies);
 }
 
-const useAsyncInternal = (func, dependencies, initialLoading = false) => {
-    const [loading, setLoading] = useState(initialLoading);
-    const [error, setError] = useState();
-    const [value, setValue] = useState();
+const useAsyncInternal = (func: Function, dependencies: DependencyList, initialLoading = false) => {
+    const [loading, setLoading] = useState<boolean>(initialLoading);
+    const [error, setError] = useState<any>();
+    const [value, setValue] = useState<any>();
 
-    const exec = useCallback((...params) => {
+    const exec = useCallback((...params: any[]) => {
         setLoading(true);
 
         return func(...params)
-            .then(data => {
+            .then((data: any) => {
                 setValue(data);
                 setError(undefined);
                 return data;
             })
-            .catch(error => {
+            .catch((error: any) => {
                 setValue(undefined);
                 setError(error);
                 return Promise.reject(error);
